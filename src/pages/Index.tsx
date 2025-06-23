@@ -1,12 +1,40 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useEffect } from 'react';
+import Navigation from '../components/Navigation';
+import HeroSection from '../components/HeroSection';
+import AboutSection from '../components/AboutSection';
+import ServicesSection from '../components/ServicesSection';
+import ResumeSection from '../components/ResumeSection';
+import ProjectsSection from '../components/ProjectsSection';
+import ContactSection from '../components/ContactSection';
+import Footer from '../components/Footer';
+import { initScrollReveal } from '../utils/scrollReveal';
 
 const Index = () => {
+  useEffect(() => {
+    // Initialize scroll reveal animations
+    const observer = initScrollReveal();
+    
+    // Cleanup observer on component unmount
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen">
+      <Navigation />
+      
+      <main>
+        <HeroSection />
+        <AboutSection />
+        <ServicesSection />
+        <ResumeSection />
+        <ProjectsSection />
+        <ContactSection />
+      </main>
+      
+      <Footer />
     </div>
   );
 };
