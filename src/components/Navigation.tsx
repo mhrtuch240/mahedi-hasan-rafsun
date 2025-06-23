@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
     { id: 'home', label: 'Home', href: '#' },
@@ -39,6 +40,7 @@ const Navigation = () => {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
+    setIsMobileMenuOpen(false);
     if (sectionId === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
@@ -53,7 +55,7 @@ const Navigation = () => {
         ? 'bg-gray-900/95 backdrop-blur-md shadow-lg' 
         : 'bg-transparent'
     }`}>
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="font-bold text-xl text-white">
@@ -61,12 +63,12 @@ const Navigation = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex space-x-6 lg:space-x-8">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`text-white hover:text-portfolio-button transition-colors duration-300 relative ${
+                className={`text-white hover:text-portfolio-button transition-colors duration-300 relative text-sm lg:text-base ${
                   activeSection === item.id ? 'text-portfolio-button' : ''
                 }`}
               >
@@ -80,13 +82,39 @@ const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button className="text-white">
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-white p-2"
+            >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
               </svg>
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-gray-900/95 backdrop-blur-md border-t border-gray-700">
+            <div className="py-4 space-y-2">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`block w-full text-left px-4 py-3 text-white hover:text-portfolio-button hover:bg-gray-800/50 transition-colors duration-300 ${
+                    activeSection === item.id ? 'text-portfolio-button bg-gray-800/50' : ''
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
